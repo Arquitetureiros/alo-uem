@@ -1,6 +1,6 @@
 <template>
-    <div id="main">
-        <div id="campos-login" class="d-flex justify-content-center col-md-3">
+    <div class="main">
+        <div class="d-flex justify-content-center col-md-3 campos-login">
             <div class="row col-10 row flex-column ">
                 <div style="margin-top: 40%;">
                     <h1 class="text-decoration-underline font-title">Alô!UEM</h1>
@@ -48,13 +48,13 @@ function entrarSistema() {
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Poppins&family=Red+Hat+Display:wght@600&display=swap');
-#main {
+.main {
     background-color: #003049;
     background-size: cover;
     margin: 0px;
 }
 
-#campos-login {
+.campos-login {
     background-color: #D9D9D9;
     background-size: cover;
     height: 100vh;
