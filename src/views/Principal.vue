@@ -21,7 +21,7 @@
                         style="color: white; font-family: 'Red Hat Display', sans-serif;">
                             Escreva um título para publicação
                         </label>
-                        <input placeholder="Escreva um título para publicação" 
+                        <input  
                         v-model="title" 
                         type="text" 
                         class="form-control w-75">
@@ -31,7 +31,7 @@
                         style="color: white; font-family: 'Red Hat Display', sans-serif;">
                             Adicionar localização
                         </label>
-                        <input placeholder="Adicionar localização" 
+                        <input
                         v-model="localizacao" 
                         type="text" 
                         class="form-control w-75">
@@ -39,32 +39,37 @@
                     <div class=" row col-11">
                         
                         <div class="col-8">
-                            <div class="mb-3">
-                                <label for="formFileMultiple" 
-                                    class="form-label"
-                                    style="color: white; 
-                                    font-family: 'Red Hat Display', sans-serif;">
+                            <div class="file-imagens">
+                                <div class="mt-5 text-center">
+                                    <i class="bi bi-file-earmark-image-fill d-block" style="font-size: 50px;"></i>
+                                <label for="fileInput" class="btn btn-custom">
+                                    <i class="bi bi-upload pe-2"></i>Enviar Arquivos
+                                    <input
+                                    id="fileInput"
+                                    class="file-upload-contain"
+                                    type="file"
+                                    accept=".jpg,.gif,.png"
+                                    multiple
+                                    style="display: none; border-radius:50px"
+                                    >
                                 </label>
-                                <input 
-                                class="form-control"
-                                type="file" 
-                                id="formFileMultiple"
-                                style=" height: 300px; width: 486px;"
-                                multiple>
+                                
+                                <h4 class="text-file">Selecionar até 3 imagens<br> para publicação</h4>
+                                </div>
                             </div>
                         </div>
                         <div class="col-4 ">
-                            <label for="title" class="font-text " 
+                            <label for="descricao" class="font-text " 
                                 style="color: white; font-family: 
                                 'Red Hat Display', sans-serif;
                                 margin-left: 40%;">
                                 <i class="bi bi-body-text"></i>  Descrição
                             </label>
-                                <input 
-                                v-model="descricao" 
-                                type="text" 
-                                class="form-control  mb-3"
-                                style="height: 300px; margin-left: 40%;">
+                            <textarea 
+                            v-model="descricao" 
+                            class="form-control mb-3" 
+                            style="min-height: 300px; max-height:300px ; margin-left: 40%;">
+                            </textarea>
                         </div>
                     </div>
                 </div>
@@ -77,6 +82,7 @@
 import { ref } from 'vue';
 const title = ref("")
 const descricao = ref("")
+const localizacao = ref("")
 </script>
 
 <style scoped>
@@ -111,6 +117,40 @@ const descricao = ref("")
     margin-left: 2.5%;
 }
 
+.file-imagens{
+    display: flex;
+    position: relative;
+    border: 2px none #e2e2e2;
+    transition: 0.3s;
+    margin-top: 24px;
+    padding: 0;
+    border-radius: 5px;
+    background-color: var(--bs-body-bg);
+    width: 486px;
+    min-height: 300px;
+    justify-content: center;
+    
+}
 
+.btn-custom {
+  background-color: #B0B0B0; 
+  color: #000000; 
+  border-radius: 15px;
+  font-family: 'Red Hat Display', sans-serif;
+}
+
+.btn-custom:hover {
+  background-color: #303030; 
+  color: #ffffff; 
+  border-radius: 15px;
+  border: 1px none #e2e2e2;
+}
+
+.text-file{
+    margin-top: 4px;
+    font-size: 13px;
+    font-family: 'Red Hat Display', sans-serif;
+    color: #B0B0B0;
+}
 
 </style>
