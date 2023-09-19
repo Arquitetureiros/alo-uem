@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router"
 import Register from '../views/Register.vue'
 import Login from '../views/Login.vue'
 import Principal from '../views/Principal.vue'
+import Perfil from '../views/Perfil.vue'
 
 const routes = [
   { 
@@ -19,6 +20,11 @@ const routes = [
     // redirect: '/login',
     name: 'home',
     component: Principal
+  },
+  {
+    path: "/perfil",
+    name: 'perfl',
+    component: Perfil
   }
 ]
 
