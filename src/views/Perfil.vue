@@ -50,14 +50,14 @@
 
                 <div class="publi">
                   <label for="title" class="font-text" 
-                  style="color: black; font-family: 'Red Hat Display', sans-serif;">
+                  style="color: black; font-family: 'Red Hat Display', sans-serif; background-color: white; width: 100%;">
                   Publicações feitas:
                   </label>
                 </div>
 
                 <div class="coment">
                   <label for="title" class="font-text" 
-                  style="color: black; font-family: 'Red Hat Display', sans-serif;">
+                  style="color: black; font-family: 'Red Hat Display', sans-serif; background-color: white; width: 100%;">
                   Comentarios feitos:
                   </label>
                 </div>
@@ -88,7 +88,7 @@
   height: 4vh;
 }
 .bi-person-circle{
-  font-size: 70px;
+  font-size: 80px;
 }
 
 .link-perfil{
