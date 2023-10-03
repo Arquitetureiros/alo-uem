@@ -1,6 +1,10 @@
 import { createRouter, createWebHistory } from "vue-router"
+
 import Register from '../views/cadastro/Register.vue'
 import RegisterValidade from '../views/cadastro/RegisterValidate.vue'
+import Login from '../views/Login.vue'
+import Principal from '../views/Principal.vue'
+
 
 const routes = [
   { 
@@ -14,9 +18,16 @@ const routes = [
     component: RegisterValidade 
   },
   {
-    path: "/",
-    redirect: "/home",
+    path: "/login",
+    name: 'login',
+    component: Login
   },
+  {
+    path: "/",
+    // redirect: '/login',
+    name: 'home',
+    component: Principal
+  }
 ]
 
 const router = createRouter({
