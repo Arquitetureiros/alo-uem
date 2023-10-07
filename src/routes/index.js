@@ -26,7 +26,14 @@ const routes = [
     path: "/",
     // redirect: '/login',
     name: 'home',
-    component: Principal
+    component: Principal, 
+    children: [
+      {
+        path: '',
+        name: 'card-publicacao',
+        component: CardPublicacao
+      }
+    ]
   }
 ]
 
