@@ -51,6 +51,7 @@
                                     accept=".jpg,.gif,.png"
                                     multiple
                                     style="display: none; border-radius:50px"
+                                    @change="handleFileUpload"
                                     >
                                 </label>
                                 
@@ -72,78 +73,227 @@
                             </textarea>
                         </div>
                     </div>
-                </div>
 
-                <div class="publicacoes"  style="box-shadow: 2px 4px 8px 0 rgba(0,0,0,0.2);">
-                    <div>
-                        <h2 style="color: black;">TÍTULO PUBLICAÇÃO</h2>
-                    </div>
-                    <div>
-                        <h3><i class="bi bi-geo-alt"></i>Localização do problema</h3>
-                    </div>
-                    <div class=" row col-11">
-                        <!-- quando tiver 1 imagem -->
-                        <div class="col-md-7 d-flex justify-content-center file-imagens">
-                            <div class="teste-borda" style="max-width: 100%; max-height: 98%; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);">
-                            <img src="../assets/img/imagem6.jpg" alt="" style="height: 100%; width: 100%; object-fit: cover; border-radius: 9px;">
-                            </div>
-                        </div>
-                        <!-- quando tiver 2 imagens -->
-                        <!-- <div class="col-8 d-flex justify-content-center file-imagens">
-                            <div class="row " style="max-width: 100%;">
-                                <div class="col-5 teste-borda" style="max-width: 100%; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);">
-                                    <img src="../assets/img/imagem2.jpg" alt="" style="height: 100%; width: 100%; object-fit: cover; border-radius: 9px;">
-                                </div>
-                                <div class="col-5 teste-borda" style="max-width: 100%; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);">
-                                    <img src="../assets/img/imagem3.jpg" alt="" style="height: 100%; width: 100%; object-fit: cover; border-radius: 9px;">
-                                </div>
-                            </div>
-                        </div> -->
-
-                        <!-- quando eu tiver 3 imagens -->
-                        <!-- <div class="col-8 d-flex justify-content-center file-imagens">
-                            <div class="col-5 teste-borda" style="max-width: 100%;">
-                                <img src="../assets/img/imagem4.jpg" alt="" style="height: 100%; width: 100%; object-fit: cover; border-radius: 9px;">
-                            </div>
-                            <div class="row col-5 mx-0">
-                                <div class="row teste-borda mx-0" style="max-width: 100%;">
-                                    <img src="../assets/img/imagem5.jpg" alt="" style="height: 100%; width: 100%; object-fit: fill; border-radius: 9px;">
-                                </div>
-                                <div class="row teste-borda  mx-0 " style="max-width: 100%;">
-                                    <img src="../assets/img/imagem6.jpg" alt="" style="height: 100%; width: 100%; object-fit: fill; border-radius: 9px; margin-bottom: -4px;">
-                                </div>
-                            </div>
-                        </div> -->
-                        
-                        
-                        <div class="col-4 ">
-                            <label for="descricao" class="font-text " 
-                                style="color: rgb(0, 0, 0); font-family: 
-                                'Red Hat Display', sans-serif;
-                                margin-left: 40%;">
-                                <i class="bi bi-body-text"></i>  Descrição
-                            </label>
-                            <textarea 
-                            v-model="descricaoPubli" 
-                            class="form-control mb-3 text-area" 
-                            style="min-height: 300px; max-height:300px ; margin-left: 40%; font-size: 13px;">
-                            </textarea>
+                    <div class="row col-11">
+                        <div class="d-flex justify-content-end ms-5 mb-3 mt-n6">
+                            <button type="button" 
+                            class="btn btn-outline-light" 
+                            @click="criarPublicacao()">Criar Publicação</button>
                         </div>
                     </div>
-                    <div class="votacao">
-                        <h3>Votacao</h3>
-                    </div>
                 </div>
+                <div>
+                    <CardPublicacao
+                        v-for="(publicacao, index) in publicacoes"
+                        :key="index"
+                        :publicacao="publicacao"
+                        />
+                </div>
+                
             </div>
         </div>
+
+        <div v-if="alertaCamposVisible" class="alerta-falha alert alert-danger d-flex " role="alert" style="margin-left: 45%;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img" aria-label="Warning:">
+                <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+            </svg>           
+             <div class="mt-n4">
+                Falha ao criar publicação: {{ mensagemFalha }}
+            </div>
+        </div>
+
+        <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+          <div id="toastCriado" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-autohide="true" data-delay="5000">
+            <div class="toast-header">
+              <strong class="me-auto">Publicado</strong>
+              <small>agora</small>
+              <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+              Sua publicação foi criada com sucesso 
+            </div>
+          </div>
+        </div>
+
+        <button @click="scrollToTop" v-if="showButton" class="go-top-btn btn btn-primary go-top-btn ">
+            <i class="bi bi-house"></i>
+        </button>    
     </div>
 </template>
 <script setup>
-import { ref, onMounted } from 'vue';
+import CardPublicacao from '../components/CardPublicacao.vue';
+import { ref, onBeforeMount, onMounted, onBeforeUnmount } from 'vue';
+import * as Funcoes from '../utils/Funcoes'
+import bootstrap  from 'bootstrap/dist/js/bootstrap.bundle.min.js';
 const title = ref("")
 const descricao = ref("")
 const localizacao = ref("")
-const descricaoPubli = ref("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s .")
+const publicacoes = ref([])
+const images = ref([]);
+const MAX_IMAGES = 3;
+const alertaCamposVisible = ref(false)
+const mensagemFalha = ref('')
+
+onBeforeMount(()=> {
+    carregarPublicacoes()
+})
+
+onMounted(() => {
+  window.addEventListener('scroll', handleScroll);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener('scroll', handleScroll);
+});
+
+const showButton = ref(false);
+
+const handleScroll = () => {
+  showButton.value = window.scrollY > 50; 
+};
+
+const scrollToTop = () => {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth',
+  });
+};
+
+function carregarPublicacoes() {
+    publicacoes.value = [
+      {
+        idPublicacao: 1,
+        tituloPublicacao: 'Título 1',
+        localizacaoPublicacao: 'Localização 1',
+        descricaoPubli: 'Descrição 1',
+        upVote: 10,
+        downVote: 5,
+        comentarios:[
+            {
+            comentarioId: 1,
+            usuarioId: 1,
+            usuario: "Leo",
+            mensagem: "Nada"
+            },
+            {
+            comentarioId: 2,
+            usuarioId: 2,
+            usuario: "Giovanni",
+            mensagem: "loren Ipsum"
+            },
+
+        ]
+      },
+      {
+        idPublicacao: 2,
+        tituloPublicacao: 'Título 2',
+        localizacaoPublicacao: 'Localização 2',
+        descricaoPubli: 'Descrição 2',
+        upVote: 7,
+        downVote: 2,
+        comentarios:[]
+      },
+      {
+        idPublicacao: 3,
+        tituloPublicacao: 'Título 3',
+        localizacaoPublicacao: 'Localização 3',
+        descricaoPubli: 'Descrição 3',
+        upVote: 151,
+        downVote: 123,
+        comentarios:[
+            {
+            comentarioId: 3,
+            usuarioId: 1,
+            usuario: "Admin",
+            mensagem: "Nada"
+            },
+            {
+            comentarioId: 4,
+            usuarioId: 2,
+            usuario: "Danilo",
+            mensagem: "loren Ipsum"
+            },
+            {
+            comentarioId: 5,
+            usuarioId: 3,
+            usuario: "Gabriel",
+            mensagem: "BABBABABBABABBABAAAAAAAAAAAAAAA"
+            },
+
+        ]
+      }
+    ]
+}
+
+function criarPublicacao() {
+    if(!verificarCamposVazios()){
+        console.log(title.value + " - " + descricao.value + " - " + localizacao.value + " - " + images.value);
+        const publicacao = {
+            tituloPublicacao: title.value,
+            localizacaoPublicacao: localizacao.value,
+            descricaoPubli: descricao.value,
+            upVote: 0,
+            downVote: 0,
+            imagens: images.value
+        }
+        console.log('PUBLICAÇÃO CRIADA');
+        publicacoes.value.push(publicacao)
+        const toast = new bootstrap.Toast(document.getElementById("toastCriado"));
+        console.log(toast);
+        toast.show();
+        title.value = ''
+        descricao.value = ''
+        localizacao.value = '' 
+        images.value = ''
+    } else {
+        alertaCamposVisible.value = true 
+        setTimeout(function () {
+            alertaCamposVisible.value = false 
+            mensagemFalha.value = ''
+        }, 4000);
+    }
+}
+
+function verificarCamposVazios() {
+    if (Funcoes.campoVazio(title.value)) {
+        mensagemFalha.value =('Necessário informar um título')
+        return true
+    }
+    if (Funcoes.campoVazio(descricao.value)) {
+        mensagemFalha.value = ('Necessário informar uma descrição')
+        return true
+    }
+    if (Funcoes.campoVazio(localizacao.value)) {
+        mensagemFalha.value = ('Necessário informar a localização do problema')
+        return true
+    }
+}
+
+
+const handleFileUpload = (event) => {
+    const files = event.target.files;
+    if (!files) return;
+
+    if (files.length > MAX_IMAGES) {
+        alert(`Você só pode inserir no máximo ${MAX_IMAGES} imagens.`);
+        return
+    } else {
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            const reader = new FileReader();
+
+            reader.onload = (e) => {
+                // Adicione a URL da imagem ao array de imagens
+                images.value.push(e.target.result);
+            };
+
+            // Leia o arquivo como uma URL de dados (base64)
+            reader.readAsDataURL(file);
+        }
+    }
+
+    console.log(images.value);
+}
 
 </script>
 
@@ -154,21 +304,26 @@ const descricaoPubli = ref("Lorem Ipsum is simply dummy text of the printing and
     background-color: #003049;
     background-size: cover;
     margin: 0px;
+    height: 100%;
 }
 .card {
     background-color: #F8E2CF;
     border-radius: 0px 0px 5px 5px;
     height: 96%;
+    margin-bottom: 3px;
 }
 .nav-bar {
     background-color: #072231;
     height: 4%;
 }
+.font-text{
+    font-family: 'Red Hat Display', sans-serif;
+    font-size: 17px;
+}
 
 .link-perfil{
     display: flex;
     color: bisque;
-
 }
 
 .create-pub{
@@ -177,25 +332,8 @@ const descricaoPubli = ref("Lorem Ipsum is simply dummy text of the printing and
     margin-top: -0.1rem !important;
     width: 95%;
     padding-left: 3px;
-    /* margin-left: 2.5%; */
-}
+    margin-bottom: 10px;
 
-.publicacoes{
-    background-color: #669BBC;
-    border-radius: 5px;
-    margin-top: 20px;
-    width: 95%;
-    padding: 10px;
-    padding-left: 15px;
-    padding-right: 12px;
-    padding-bottom: 20px;
-    margin-bottom: 20px;
-    /* margin-left: 2.5%; */
-}
-
-.text-area{
-    background-color: #f8e2cf5b;
-    border: 1px none #e2e2e2;
 }
 
 .file-imagens{
@@ -224,11 +362,32 @@ const descricaoPubli = ref("Lorem Ipsum is simply dummy text of the printing and
     color: #B0B0B0;
 }
 
-.teste-borda{
-    border-radius: 9px;
-    border: 1px solid rgba(49, 49, 49, 0.418);
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-    margin-right: 2px;
+.alerta-falha {
+    position: fixed;
+    bottom: 0;
+    left: 0; 
+    z-index: 999;
+    max-height: 70px;
+    max-width: 300px;
+}
+
+.go-top-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20%;
+  display: flex;
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: opacity 0.1s, visibility 0.1s;
+
+}
+
+.go-top-btn:hover {
+  background-color: #0056b3;
 }
 
 </style>
