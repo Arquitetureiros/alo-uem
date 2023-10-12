@@ -4,7 +4,7 @@ import Register from '../views/cadastro/Register.vue'
 import RegisterValidade from '../views/cadastro/RegisterValidate.vue'
 import Login from '../views/Login.vue'
 import Principal from '../views/Principal.vue'
-
+import CardPublicacao from '../components/CardPublicacao.vue';
 
 const routes = [
   { 
