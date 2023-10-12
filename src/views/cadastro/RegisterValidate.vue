@@ -1,6 +1,12 @@
 <template>
-  <div id="main" class="row justify-content-center">
-    <div id="card" class="col-md-3 col-10 align-self-center text-white">
+  <div
+    id="main"
+    class="row justify-content-center"
+  >
+    <div
+      id="card"
+      class="col-md-3 col-10 align-self-center text-white"
+    >
       <div class="d-flex flex-column">
         <div class="d-flex flex-column p-4">
           <span class="h1 text-dark fw-light text-decoration-underline">
@@ -10,23 +16,34 @@
             Cadastrar
           </span>
         </div>
-        <div class="d-flex flex-column col-12 gap-4 justify-content-center align-content-center p-4" id="form">
-            <span>
-              Insira seu email da UEM para a validacao
-            </span>
-            <input v-model="email" class="form-control" type="text" placeholder="ra123456@uem.br">
-            <div class="col align-self-center">
-              <button @click="validar" class="btn button">
-                VALIDAR
-              </button>
-            </div>
+        <div
+          id="form"
+          class="d-flex flex-column col-12 gap-4 justify-content-center align-content-center p-4"
+        >
+          <span>
+            Insira seu email da UEM para a validacao
+          </span>
+          <input
+            v-model="email"
+            class="form-control"
+            type="text"
+            placeholder="ra123456@uem.br"
+          >
+          <div class="col align-self-center">
+            <button
+              class="btn button"
+              @click="validar"
+            >
+              VALIDAR
+            </button>
+          </div>
         </div>
       </div>
     </div>
   </div> 
 </template>
 <script>
-import { ref, watch, reactive } from 'vue';
+import { ref } from 'vue';
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
 
