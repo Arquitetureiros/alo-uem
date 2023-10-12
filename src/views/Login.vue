@@ -42,8 +42,8 @@ import { toast } from 'vue3-toastify';
 import { useRouter } from 'vue-router';
 
 const dados = reactive({
-    email: 'ra116993@uem.br',
-    senha: 'teste123'
+    email: '',
+    senha: ''
 })
 
 const route = useRouter();
@@ -51,7 +51,7 @@ const route = useRouter();
 async function login() {
     await http.post('login', dados)
     .then((response) => {
-        toast.success("login realizado com sucesso.", {
+        toast.success("Login realizado com sucesso.", {
           autoClose: 3000,
           position: toast.POSITION.BOTTOM_RIGHT
         });
@@ -61,7 +61,7 @@ async function login() {
 
         route.push({name: 'home'})
     })
-    .catch((err) => {
+    .catch(() => {
         toast.error("Erro ao efetuar login.", {
           autoClose: 3000,
           position: toast.POSITION.BOTTOM_RIGHT

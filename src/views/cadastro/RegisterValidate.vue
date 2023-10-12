@@ -33,6 +33,7 @@ import { ref } from 'vue';
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
 import { useRouter } from 'vue-router';
+import http from '@/services/http';
 
 export default {
   name: "ValidarCadastro",
@@ -54,19 +55,10 @@ export default {
         email: email.value
       }
 
-      const obj = {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(emailRequest),
-      }
-
-      await fetch('http://127.0.0.1:8000/api/validaremail', obj)
-      .then((response) => {
-        if(response.ok) {
+      await http.post('/validaremail', emailRequest)
+      .then(() => {
           toast.success("Email validado com sucesso.", {
-            autoClose: 3000,
+            autoClose: 2000,
             position: toast.POSITION.BOTTOM_RIGHT
           });
           
@@ -74,13 +66,13 @@ export default {
             route.push({ name: 'cadastro' , params: { email: email.value }});
           }, 3000);
 
-        } else {
-          toast.error("Ouve um erro ao validar seu email.", {
-          autoClose: 3000,
-          position: toast.POSITION.BOTTOM_RIGHT
         })
-        }
-      })
+        .catch(() => {
+          toast.error("Ouve um erro ao validar seu email.", {
+            autoClose: 3000,
+            position: toast.POSITION.BOTTOM_RIGHT
+          })
+        })
     }
     
     return {
