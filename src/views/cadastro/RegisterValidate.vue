@@ -22,19 +22,24 @@
             </div>
         </div>
       </div>
+      <a href="../login">
+        <h4 id="link-cadastrar">Voltar</h4>
+      </a>
     </div>
   </div> 
 </template>
 <script>
-import { ref, watch, reactive } from 'vue';
+import { ref } from 'vue';
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
+import { useRouter } from 'vue-router';
 
 export default {
   name: "ValidarCadastro",
   components: {},
   setup(){
     const email = ref();
+    const route = useRouter();
 
     async function validar(){
       if(!email.value){
@@ -64,6 +69,11 @@ export default {
             autoClose: 3000,
             position: toast.POSITION.BOTTOM_RIGHT
           });
+          
+          setInterval(() => {
+            route.push({ name: 'cadastro' , params: { email: email.value }});
+          }, 3000);
+
         } else {
           toast.error("Ouve um erro ao validar seu email.", {
           autoClose: 3000,
@@ -106,5 +116,14 @@ export default {
   .button:hover{
     background-color: #003049;
     border-color: #D9D9D9;
+  }
+  #link-cadastrar{
+    font-family: 'Red Hat Display', sans-serif;
+    font-size: x-large;
+    color: #003049;
+    text-decoration: underline;
+  }
+  a {
+    text-decoration: none;
   }
 </style>

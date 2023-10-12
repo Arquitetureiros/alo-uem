@@ -8,7 +8,7 @@ import CardPublicacao from '../components/CardPublicacao.vue';
 
 const routes = [
   { 
-    path: '/register',
+    path: '/register/:email',
     name: 'cadastro',
     component: Register 
   },
@@ -31,7 +31,7 @@ const routes = [
       {
         path: '',
         name: 'card-publicacao',
-        component: CardPublicacao
+        component: import('../components/CardPublicacao.vue')
       }
     ]
   }
