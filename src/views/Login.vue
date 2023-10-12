@@ -10,21 +10,21 @@
                                 <label for="email" class="font-text">
                                     Email Institucional
                                 </label>
-                                <input placeholder="ra@uem.br" v-model="email" type="text" class="form-control">
+                                <input placeholder="ra@uem.br" v-model="dados.email" type="text" class="form-control">
                             </div>
                             <div class="col-11">
                                 <label for="senha" class="font-text">
                                     Senha
                                 </label>
-                                <input v-model="senha" type="password" class="form-control">
+                                <input v-model="dados.senha" type="password" class="form-control">
                             </div>
-                            <button type="button" class="btn col-6 botao-entrar" :onclick="entrarSistema">
+                            <button type="button" class="btn col-6 botao-entrar" :onclick="login">
                                 <h4 class="mt-1 font-title">ENTRAR</h4>
                             </button>
                         </div>
                     </div>
                     <div class="d-flex justify-content-center mt-4">
-                        <a id="link-cadastrar" href="/register">Cadastrar-se</a>
+                        <a id="link-cadastrar" href="/register-validate">Cadastrar-se</a>
                     </div>
                 </div>
             </div>
@@ -36,13 +36,38 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-const email = ref('');
-const senha = ref(null)
+import  http  from '@/services/http.js'
+import { reactive } from 'vue'
+import { toast } from 'vue3-toastify';
+import { useRouter } from 'vue-router';
 
-function entrarSistema() {
-    //fazer função para validar os dados
-    console.log(email.value + senha.value);
+const dados = reactive({
+    email: 'ra116993@uem.br',
+    senha: 'teste123'
+})
+
+const route = useRouter();
+
+async function login() {
+    await http.post('login', dados)
+    .then((response) => {
+        toast.success("login realizado com sucesso.", {
+          autoClose: 3000,
+          position: toast.POSITION.BOTTOM_RIGHT
+        });
+
+        localStorage.setItem('token', response.data.jwt);
+        localStorage.setItem('usuario', JSON.stringify(response.data.usuario));
+
+        route.push({name: 'home'})
+    })
+    .catch((err) => {
+        toast.error("Erro ao efetuar login.", {
+          autoClose: 3000,
+          position: toast.POSITION.BOTTOM_RIGHT
+        });
+    })
+
 }
 </script>
 
