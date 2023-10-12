@@ -9,6 +9,10 @@ class FotoDataService{
         return http.get('/foto/')
     }
 
+    get_by_publicacao(id){
+        return http.get(`/foto/publicacao/${id}`)
+    }
+
     post(foto){
         return http.post('/foto', foto)
     }

@@ -9,6 +9,10 @@ class ComentarioDataService{
         return http.get('/comentario/')
     }
 
+    get_by_publicacao(id){
+        return http.get(`/comentario/publicacao/${id}`)
+    }
+
     post(comentario){
         return http.post('/comentario', comentario)
     }
