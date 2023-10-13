@@ -119,9 +119,12 @@
             <i class="bi bi-house"></i>
         </button>    
     </div>
+
+    <AlertaTermosUso :alerta-visible="alertaVisible" @fechar="fecharAlerta" ></AlertaTermosUso>
 </template>
 <script setup>
 import CardPublicacao from '../components/CardPublicacao.vue';
+import AlertaTermosUso from '../components/AlertaTermosUso.vue';
 import { ref, onBeforeMount, onMounted, onBeforeUnmount } from 'vue';
 import * as Funcoes from '../utils/Funcoes'
 import bootstrap  from 'bootstrap/dist/js/bootstrap.bundle.min.js';
@@ -133,17 +136,19 @@ const images = ref([]);
 const MAX_IMAGES = 3;
 const alertaCamposVisible = ref(false)
 const mensagemFalha = ref('')
-
+const alertaVisible = ref(true)
 onBeforeMount(()=> {
     carregarPublicacoes()
 })
 
 onMounted(() => {
   window.addEventListener('scroll', handleScroll);
+  verificarAlertaTermosUso()
 });
 
 onBeforeUnmount(() => {
   window.removeEventListener('scroll', handleScroll);
+  
 });
 
 const showButton = ref(false);
@@ -293,6 +298,18 @@ const handleFileUpload = (event) => {
     }
 
     console.log(images.value);
+}
+
+function verificarAlertaTermosUso(){
+    const fecharAlerta = localStorage.getItem('fecharAlerta');
+    if (!Funcoes.campoVazio(fecharAlerta)) {
+        alertaVisible.value = false
+    }
+}
+
+function fecharAlerta() {
+    alertaVisible.value = false
+    localStorage.setItem('fecharAlerta', 'true');
 }
 
 </script>
