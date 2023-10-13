@@ -117,6 +117,9 @@
               >
                 <h4>CADASTRAR</h4>
               </button>
+              <a href="../login">
+                  <h4 id="link-cadastrar">Voltar</h4>
+              </a>
             </div>
           </div>
         </div>
@@ -125,9 +128,11 @@
   </div>
 </template>
 <script>
-import { ref, watch, reactive } from 'vue';
+import { ref, watch, reactive, onMounted } from 'vue';
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
+import { useRouter } from 'vue-router';
+import http from '@/services/http.js'
 
 export default {
   name: "TelaCadastro",
@@ -135,6 +140,7 @@ export default {
   setup(){
     const terms = ref(false);
     const passValid = ref(true);
+    const route = useRouter();
     const pessoa = reactive({
       email: '',
       user: '',
@@ -176,25 +182,15 @@ export default {
         Nome: pessoa.user
       }
 
-      const obj = {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(user),
-      }
-
-      await fetch('http://127.0.0.1:8000/api/usuario', obj)
-      .then((response) => {
-        console.log(response.data);
+      await http.post('/usuario', user)
+      .then(() => {
+        
         toast.success("Cadsatro realizado com sucesso.", {
           autoClose: 3000,
           position: toast.POSITION.BOTTOM_RIGHT
         });
-        toast.success("Voce será redirecionado em breve.", {
-          autoClose: 3000,
-          position: toast.POSITION.BOTTOM_RIGHT
-        });
+        
+        route.push({name: 'login'})
       })
       .catch(() => {
         toast.error("Ouve um erro ao realizar o cadastro.", {
@@ -211,6 +207,10 @@ export default {
         passValid.value = true;
       }
     })
+
+    onMounted(() => {
+      pessoa.email = route.currentRoute.value.params.email;
+    });
 
     return {
       pessoa,
@@ -244,4 +244,10 @@ export default {
     background-color: #D9D9D9;
     height: 3rem;
   }
+  #link-cadastrar{
+    font-family: 'Red Hat Display', sans-serif;
+    font-size: x-large;
+    color: #D9D9D9;
+    text-decoration: underline;
+}
 </style>
