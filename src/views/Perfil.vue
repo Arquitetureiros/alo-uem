@@ -51,8 +51,18 @@
                 <div class="publi">
                   <label for="title" class="font-text" 
                   style="color: black; font-family: 'Red Hat Display', sans-serif; background-color: white; width: 100%;">
+                  
                   Publicações feitas:
                   </label>
+                  <div class="d-flex flex-column mb-4">
+                    <CardTituloPubli
+                        v-for="(publicacao, index) in publicacoes"
+                        :key="index"
+                        :publicacao="publicacao"
+                        />
+                  </div>
+
+
                 </div>
 
                 <div class="coment">
@@ -68,6 +78,53 @@
   </div>
 </template>
 <script setup>
+import CardTituloPubli from '../components/CardTituloPubli.vue';
+import { ref, onBeforeMount, onMounted, onBeforeUnmount } from 'vue';
+
+const publicacoes = ref([])
+
+onBeforeMount(()=> {
+  carregarPublicacoes()
+  })
+
+    function carregarPublicacoes() {
+      publicacoes.value = [
+      {
+        idPublicacao: 1,
+        tituloPublicacao: 'Título 1',
+        localizacaoPublicacao: 'Localização 1',
+        descricaoPubli: 'Descrição 1',
+        upVote: 10,
+        downVote: 5,
+        comentarios:[
+            {
+            comentarioId: 1,
+            usuarioId: 1,
+            usuario: "Leo",
+            mensagem: "Nada"
+            },
+            {
+            comentarioId: 2,
+            usuarioId: 2,
+            usuario: "Giovanni",
+            mensagem: "loren Ipsum"
+            },
+
+        ]
+      },
+      {
+        idPublicacao: 2,
+        tituloPublicacao: 'Título 2',
+        localizacaoPublicacao: 'Localização 2',
+        descricaoPubli: 'Descrição 2',
+        upVote: 7,
+        downVote: 2,
+        comentarios:[]
+      },
+    ]
+}
+
+
 </script>
 
 <style scoped>
@@ -114,6 +171,20 @@
   height: 440px;
   margin-top: 44px;
   margin-left: 44px;
+}
+.file-imagens{
+    display: flex;
+    position: relative;
+    border: 2px none #e2e2e2;
+    transition: 0.3s;
+    margin-top: 24px;
+    padding: 0;
+    border-radius: 5px;
+    background-color: var(--bs-body-bg);
+    width: 486px;
+    min-height: 300px;
+    justify-content: center;
+    
 }
 .coment{
   background-color: #F8E2CF;
