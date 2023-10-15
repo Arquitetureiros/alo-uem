@@ -55,7 +55,7 @@
                   Publicações feitas:
                   </label>
                   <div class="d-flex flex-column mb-4">
-                    <CardTituloPubli
+                    <CardPublicacaoPerfil
                         v-for="(publicacao, index) in publicacoes"
                         :key="index"
                         :publicacao="publicacao"
@@ -70,6 +70,14 @@
                   style="color: black; font-family: 'Red Hat Display', sans-serif; background-color: white; width: 100%;">
                   Comentarios feitos:
                   </label>
+                  <div class="d-flex flex-column mb-4">
+                    <CardComentario
+                        v-for="(publicacao, index) in publicacoes"
+                        :key="index"
+                        :publicacao="publicacao"
+                        />
+                  </div>
+                  
                 </div>
               </div>
 
@@ -78,8 +86,9 @@
   </div>
 </template>
 <script setup>
-import CardTituloPubli from '../components/CardTituloPubli.vue';
-import { ref, onBeforeMount, onMounted, onBeforeUnmount } from 'vue';
+import CardPublicacaoPerfil from '../components/CardPublicacaoperfil.vue';
+import CardComentario from '../components/CardComentario.vue';
+import { ref, onBeforeMount} from 'vue';
 
 const publicacoes = ref([])
 
@@ -165,6 +174,7 @@ onBeforeMount(()=> {
 }
 
 .publi{
+  overflow-y: scroll;
   background-color: #F8E2CF;
   border-radius: 0px 0px 5px 5px;
   width: 650px;
@@ -187,6 +197,7 @@ onBeforeMount(()=> {
     
 }
 .coment{
+  overflow-y: scroll;
   background-color: #F8E2CF;
   border-radius: 0px 0px 5px 5px;
   width: 650px;
