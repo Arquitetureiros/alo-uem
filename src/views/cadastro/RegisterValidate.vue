@@ -39,6 +39,9 @@
           </div>
         </div>
       </div>
+      <a href="../login">
+        <h4 id="link-cadastrar">Voltar</h4>
+      </a>
     </div>
   </div> 
 </template>
@@ -46,12 +49,15 @@
 import { ref } from 'vue';
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
+import { useRouter } from 'vue-router';
+import http from '@/services/http';
 
 export default {
   name: "ValidarCadastro",
   components: {},
   setup(){
     const email = ref();
+    const route = useRouter();
 
     async function validar(){
       if(!email.value){
@@ -66,28 +72,24 @@ export default {
         email: email.value
       }
 
-      const obj = {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(emailRequest),
-      }
-
-      await fetch('http://127.0.0.1:8000/api/validaremail', obj)
-      .then((response) => {
-        if(response.ok) {
+      await http.post('/validaremail', emailRequest)
+      .then(() => {
           toast.success("Email validado com sucesso.", {
-            autoClose: 3000,
+            autoClose: 2000,
             position: toast.POSITION.BOTTOM_RIGHT
           });
-        } else {
-          toast.error("Ouve um erro ao validar seu email.", {
-          autoClose: 3000,
-          position: toast.POSITION.BOTTOM_RIGHT
+          
+          setInterval(() => {
+            route.push({ name: 'cadastro' , params: { email: email.value }});
+          }, 3000);
+
         })
-        }
-      })
+        .catch(() => {
+          toast.error("Ouve um erro ao validar seu email.", {
+            autoClose: 3000,
+            position: toast.POSITION.BOTTOM_RIGHT
+          })
+        })
     }
     
     return {
@@ -123,5 +125,14 @@ export default {
   .button:hover{
     background-color: #003049;
     border-color: #D9D9D9;
+  }
+  #link-cadastrar{
+    font-family: 'Red Hat Display', sans-serif;
+    font-size: x-large;
+    color: #003049;
+    text-decoration: underline;
+  }
+  a {
+    text-decoration: none;
   }
 </style>
