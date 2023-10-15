@@ -1,7 +1,14 @@
 <template>
   <div class="card-publicacao">
       <div v-if="comentarios.length > 0" class="comentarios row " style="box-shadow: 2px 4px 8px 0 rgba(0,0,0,0.2);">
-          <div class="col-md-12">
+        <div class="row">
+              <div class="col-9 d-flex justify-content-start">
+                  <p class="titulo-pub">
+                      <span > {{ publicacao.tituloPublicacao }}</span>
+                  </p>
+              </div>
+        </div>
+        <div class="col-md-12">
               <div class="bloco-menor row">
                   <div v-if="!verMaisVisible">
                       <p>
@@ -30,59 +37,10 @@ const props = defineProps({
 })
 
 const tituloPublicacao = ref('Título Publicação')
-const localizacaoPublicacao = ref('Fruta que fariu')
-const descricaoPubli = ref("")
 const comentarios = ref(props.publicacao.comentarios)
 const verMaisVisible = ref(false)
 const comentarioVisible = ref(false)
 
-
-
-function verMaisComentario() {
-  verMaisVisible.value = !verMaisVisible.value
-}
-// comentarios.value = [
-//     {
-//         autorComentario: "Gabriel Valentim",
-//         comment: "BABBABABBABABBABAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-//     },
-//     {
-//         autorComentario: "Danilo",
-//         comment: "loren Ipsum"
-//     },
-//     {
-//         autorComentario: "Giovanni GUILHOTINAS",
-//         comment: "BABBABABBABABBABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-//     },
-//     {
-//         autorComentario: "leozin_muito_forte",
-//         comment: "BABBABABBABABBABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABABBABABBABABBABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABABBABABBABABBABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABABBABABBABABBABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABABBABABBABABBABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABABBABABBABABBABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-//     },
-// 
-// ]
-
-const upVote = ref(props.publicacao.upVote)
-const votoPositivo = ref(0)
-function aumentarVotacao() {
-  if (votoPositivo.value === 0) {
-      votoPositivo.value = 1
-      upVote.value += 1
-  } else {
-      votoPositivo.value = 0
-      upVote.value -= 1
-  }
-}
-const downVote = ref(props.publicacao.downVote)
-const votoNegativo = ref(0)
-function diminuirVotacao() {
-  if (votoNegativo.value === 0) {
-      votoNegativo.value = 1
-      downVote.value += 1
-  } else {
-      votoNegativo.value = 0
-      downVote.value -= 1
-  }
-}
 const comentarioPublicao = ref('')
 function enviarComentario(idPublicacao) {
   console.log(idPublicacao + " - " + comentarioPublicao.value);

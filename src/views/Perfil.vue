@@ -28,7 +28,8 @@
                     Nome de Usuário:
                     </label>
                     <input  
-                    v-model="nome" 
+                    disabled
+                    :value="nome_usuario"  
                     type="text" 
                     class="form-control w-65">
                   </div>
@@ -38,7 +39,8 @@
                     style="color: black; font-family: 'Red Hat Display', sans-serif;">
                     Email educacional:
                     </label>
-                    <input  
+                    <input
+                    disabled  
                     v-model="email" 
                     type="text" 
                     class="form-control w-65">
@@ -91,10 +93,24 @@ import CardComentario from '../components/CardComentario.vue';
 import { ref, onBeforeMount} from 'vue';
 
 const publicacoes = ref([])
+const userLogado = ref(null)
+const nome_usuario = ref(null)
+const email = ref(null)
+
 
 onBeforeMount(()=> {
   carregarPublicacoes()
+  carregarUsuarioLogado()
   })
+
+  function carregarUsuarioLogado(){
+    const jsonString = localStorage.getItem('usuario');
+    const objeto = JSON.parse(jsonString);
+    userLogado.value = objeto
+    nome_usuario.value = userLogado.value.Nome
+    email.value = userLogado.value.Email
+  }
+
 
     function carregarPublicacoes() {
       publicacoes.value = [
@@ -109,8 +125,8 @@ onBeforeMount(()=> {
             {
             comentarioId: 1,
             usuarioId: 1,
-            usuario: "Leo",
-            mensagem: "Nada"
+            usuario: nome_usuario,
+            mensagem: "quero me matar"
             },
             {
             comentarioId: 2,
@@ -128,7 +144,36 @@ onBeforeMount(()=> {
         descricaoPubli: 'Descrição 2',
         upVote: 7,
         downVote: 2,
-        comentarios:[]
+        comentarios:[
+            {
+            comentarioId: 1,
+            usuarioId: 1,
+            usuario: nome_usuario,
+            mensagem: "quero me matar"
+            }
+        ]
+      },
+      {
+        idPublicacao: 3,
+        tituloPublicacao: 'Título 3',
+        localizacaoPublicacao: 'Localização 3',
+        descricaoPubli: 'Descrição 3',
+        upVote: 7,
+        downVote: 3,
+        comentarios:[
+            {
+            comentarioId: 1,
+            usuarioId: 1,
+            usuario: nome_usuario,
+            mensagem: "quero me matar"
+            },
+            {
+            comentarioId: 1,
+            usuarioId: 1,
+            usuario: nome_usuario,
+            mensagem: "quero me matar"
+            }
+        ]
       },
     ]
 }
