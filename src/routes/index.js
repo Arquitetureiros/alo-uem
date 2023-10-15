@@ -1,30 +1,39 @@
 import { createRouter, createWebHistory } from "vue-router"
-import Register from '../views/Register.vue'
-import Login from '../views/Login.vue'
-import Principal from '../views/Principal.vue'
-import Perfil from '../views/Perfil.vue'
+
 
 const routes = [
   { 
-    path: '/register',
+    path: '/register/:email',
     name: 'cadastro',
-    component: Register 
+    component: import('../views/cadastro/Register.vue') 
+  },
+  { 
+    path: '/register-validate',
+    name: 'validar-cadastro',
+    component: import('../views/cadastro/RegisterValidate.vue') 
   },
   {
     path: "/login",
     name: 'login',
-    component: Login
+    component: import('../views/Login.vue')
   },
   {
     path: "/perfil",
     name: 'perfil',
-    component: Perfil
+    component: import('../views/Perfil.vue')
   },
   {
     path: "/",
     // redirect: '/login',
     name: 'home',
-    component: Principal
+    component: import('../views/Principal.vue'), 
+    children: [
+      {
+        path: '',
+        name: 'card-publicacao',
+        component: import('../components/CardPublicacao.vue')
+      }
+    ]
   }
 ]
 
