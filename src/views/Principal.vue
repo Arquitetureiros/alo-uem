@@ -1,12 +1,22 @@
 <template>
     <div class="main ">
-        <ul class="nav justify-content-end nav-bar ">
+        <ul class="nav justify-content-between nav-bar ">
             <li class="nav-item ">
                 <div class="">
-                    <a 
+                    <a role="button"
                     class="nav-link active me-4 link-perfil" 
-                    aria-current="page" 
-                    href="#">
+                    aria-current="page"
+                    @click="sairSistema()">
+                       Sair
+                    </a>
+                </div>
+            </li>
+            <li class="nav-item ">
+                <div class="">
+                    <a role="button"
+                    class="nav-link active me-4 link-perfil" 
+                    aria-current="page"
+                    @click="irPerfil()">
                         <i class="bi bi-person"></i> Perfil
                     </a>
                 </div>
@@ -135,6 +145,9 @@ import bootstrap  from 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
 import http from '../services/http.js'
+import { useRouter } from 'vue-router';
+
+const route = useRouter();
 const title = ref("")
 const descricao = ref("")
 const publicacoes = ref([])
@@ -300,6 +313,15 @@ function verificarAlertaTermosUso(){
 function fecharAlerta() {
     alertaVisible.value = false
     localStorage.setItem('fecharAlerta', 'true');
+}
+
+function irPerfil(){
+    //route.push({name: 'perfil'})
+}
+
+function sairSistema() {
+    route.push({name: 'login'})
+    localStorage.clear();
 }
 
 </script>
