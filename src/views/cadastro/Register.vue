@@ -178,7 +178,7 @@ export default {
       const user = {
         Email: pessoa.email,
         Senha: pessoa.password,
-        RA: pessoa.user,
+        RA: pessoa.ra,
         Nome: pessoa.user
       }
 

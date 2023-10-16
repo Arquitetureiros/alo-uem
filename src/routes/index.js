@@ -31,6 +31,11 @@ const routes = [
         path: '',
         name: 'card-publicacao',
         component: import('../components/CardPublicacao.vue')
+      },
+      {
+        path: '',
+        name: 'alerta-termos',
+        component: import('../components/AlertaTermosUso.vue')
       }
     ]
   }
