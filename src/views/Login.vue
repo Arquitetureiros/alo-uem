@@ -42,8 +42,8 @@ import { toast } from 'vue3-toastify';
 import { useRouter } from 'vue-router';
 
 const dados = reactive({
-    email: '',
-    senha: ''
+    email: 'admin@admin.com',
+    senha: 'admin'
 })
 
 const route = useRouter();
@@ -58,6 +58,7 @@ async function login() {
 
         localStorage.setItem('token', response.data.jwt);
         localStorage.setItem('usuario', JSON.stringify(response.data.usuario));
+        localStorage.setItem('tipo', JSON.stringify(response.data.usuario.tipo));
 
         route.push({name: 'home'})
     })
