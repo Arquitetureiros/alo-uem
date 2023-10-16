@@ -16,7 +16,7 @@
             >
                 <vueper-slide v-for="(f, index) in publicacao.fotos"
                     :key="index"
-                    :image="'data:image/jpeg;base64,'+f.nome"
+                    :image="f.nome"
                     >
                 </vueper-slide>
             </vueper-slides>

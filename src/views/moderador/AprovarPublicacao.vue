@@ -1,5 +1,24 @@
 <template>
-  <div id="main" class="row align-content-center justify-content-center">
+<div id="main">
+  <div>
+    <ul class="nav justify-content-end nav-bar">
+      <li class="nav-item">
+          <div class="">
+              <a 
+              class="nav-link active me-4 link-perfil align-items-center flex"
+              aria-current="page" 
+              href="#"
+              >
+              <i class="fa-regular fa-user pe-2"></i>
+                <span>
+                  Perfil
+                </span>
+              </a>
+          </div>
+      </li>
+    </ul>
+    </div>
+  <div class="row mt-5 justify-content-center">
       <div class="col-6">
         <div v-if="publicacoes" v-for="(pub, index) in publicacoes" :key="index">
           <div v-if="active[index]"  id="card">
@@ -50,6 +69,7 @@
           </div>
         </vue-final-modal>
       </div>
+  </div>
 </template>
 <script>
 import Publicacao from '@/views/moderador/Publicacao.vue'
@@ -171,5 +191,13 @@ export default {
   }
   #modal {
     border-radius: 8px;
+  }
+  .nav-bar {
+    background-color: #072231;
+    height: 4%;
+  }
+  .link-perfil{
+    display: flex;
+    color: bisque;
   }
 </style>
