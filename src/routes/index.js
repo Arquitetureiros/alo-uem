@@ -7,7 +7,7 @@ const routes = [
     component: import('../views/cadastro/Register.vue') 
   },
   { 
-    path: '/register-validate',
+    path: '/register-validate', 
     name: 'validar-cadastro',
     component: import('../views/cadastro/RegisterValidate.vue') 
   },
@@ -15,6 +15,11 @@ const routes = [
     path: "/login",
     name: 'login',
     component: import('../views/Login.vue')
+  },
+  {
+    path: "/mod/publicacoes",
+    name: 'modPublicacoes',
+    component: import('../views/moderador/AprovarPublicacao.vue')
   },
   {
     path: "/",
@@ -34,6 +39,20 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
+})
+
+router.beforeEach((to, from) => {
+  
+  const token = localStorage.getItem('token');
+  if(!token && to.name != 'login'){
+    return { name: 'login' }
+  }
+
+  const tipo = localStorage.getItem('tipo');
+  if(tipo == '"moderador"' && to.name != 'modPublicacoes'){
+    return { name: 'modPublicacoes' }
+  }
+
 })
 
 export default router;

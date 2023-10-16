@@ -58,6 +58,7 @@ async function login() {
 
         localStorage.setItem('token', response.data.jwt);
         localStorage.setItem('usuario', JSON.stringify(response.data.usuario));
+        localStorage.setItem('tipo', JSON.stringify(response.data.usuario.tipo));
 
         route.push({name: 'home'})
     })
