@@ -50,12 +50,13 @@
 
               <div class="row">
 
-                <div class="publi">
+                <div class="publi" style="">
+
                   <label for="title" class="font-text" 
                   style="color: black; font-family: 'Red Hat Display', sans-serif; background-color: white; width: 100%;">
-                  
                   Publicações feitas:
                   </label>
+
                   <div class="d-flex flex-column mb-4">
                     <CardPublicacaoPerfil
                         v-for="(publicacao, index) in publicacoes"
@@ -68,10 +69,12 @@
                 </div>
 
                 <div class="coment">
+
                   <label for="title" class="font-text" 
                   style="color: black; font-family: 'Red Hat Display', sans-serif; background-color: white; width: 100%;">
                   Comentarios feitos:
                   </label>
+
                   <div class="d-flex flex-column mb-4">
                     <CardComentario
                         v-for="(publicacao, index) in publicacoes"
@@ -90,93 +93,51 @@
 <script setup>
 import CardPublicacaoPerfil from '../components/CardPublicacaoperfil.vue';
 import CardComentario from '../components/CardComentario.vue';
-import { ref, onBeforeMount} from 'vue';
+import { ref, onBeforeMount } from 'vue';
+import http from '../services/http.js'
 
-const publicacoes = ref([])
-const userLogado = ref(null)
-const nome_usuario = ref(null)
-const email = ref(null)
+const publicacoes = ref([]);
+const userLogado = ref(null);
+const nome_usuario = ref(null);
+const email = ref(null);
+const id = ref(null);
 
+onBeforeMount(() => {
+  carregarUsuarioLogado();
+  carregarPublicacoes();
+});
 
-onBeforeMount(()=> {
-  carregarPublicacoes()
-  carregarUsuarioLogado()
-  })
-
-  function carregarUsuarioLogado(){
-    const jsonString = localStorage.getItem('usuario');
-    const objeto = JSON.parse(jsonString);
-    userLogado.value = objeto
-    nome_usuario.value = userLogado.value.Nome
-    email.value = userLogado.value.Email
-  }
-
-
-    function carregarPublicacoes() {
-      publicacoes.value = [
-      {
-        idPublicacao: 1,
-        tituloPublicacao: 'Título 1',
-        localizacaoPublicacao: 'Localização 1',
-        descricaoPubli: 'Descrição 1',
-        upVote: 10,
-        downVote: 5,
-        comentarios:[
-            {
-            comentarioId: 1,
-            usuarioId: 1,
-            usuario: nome_usuario,
-            mensagem: "quero me matar"
-            },
-            {
-            comentarioId: 2,
-            usuarioId: 2,
-            usuario: "Giovanni",
-            mensagem: "loren Ipsum"
-            },
-
-        ]
-      },
-      {
-        idPublicacao: 2,
-        tituloPublicacao: 'Título 2',
-        localizacaoPublicacao: 'Localização 2',
-        descricaoPubli: 'Descrição 2',
-        upVote: 7,
-        downVote: 2,
-        comentarios:[
-            {
-            comentarioId: 1,
-            usuarioId: 1,
-            usuario: nome_usuario,
-            mensagem: "quero me matar"
-            }
-        ]
-      },
-      {
-        idPublicacao: 3,
-        tituloPublicacao: 'Título 3',
-        localizacaoPublicacao: 'Localização 3',
-        descricaoPubli: 'Descrição 3',
-        upVote: 7,
-        downVote: 3,
-        comentarios:[
-            {
-            comentarioId: 1,
-            usuarioId: 1,
-            usuario: nome_usuario,
-            mensagem: "quero me matar"
-            },
-            {
-            comentarioId: 1,
-            usuarioId: 1,
-            usuario: nome_usuario,
-            mensagem: "quero me matar"
-            }
-        ]
-      },
-    ]
+function carregarUsuarioLogado() {
+  const jsonString = localStorage.getItem('usuario');
+  const objeto = JSON.parse(jsonString);
+  userLogado.value = objeto;
+  nome_usuario.value = userLogado.value.Nome;
+  email.value = userLogado.value.Email;
+  id.value = userLogado.value.IdUsuario
 }
+
+// async function carregarPublicacoes() {
+//   try {
+//     const response = await axios.get(`publicacao/usuario/${id.value}`);
+//     publicacoes.value = response.data;
+//   } catch (error) {
+//     console.error(`Erro ao carregar publicações: ${error}`);
+//   }
+// }
+
+
+async function carregarPublicacoes() {
+    await http.get(`publicacao/usuario/${id.value}`)
+        .then(response => {
+           console.log(response)
+            publicacoes.value = response.data
+        })
+        .catch(error => {
+            console.error("Erro ao carregar publicações: " + error);
+        })
+
+}
+
 
 
 </script>

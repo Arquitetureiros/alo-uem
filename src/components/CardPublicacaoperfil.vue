@@ -4,7 +4,7 @@
           <div class="row">
               <div class="col-9 d-flex justify-content-start">
                   <p class="titulo-pub">
-                      <span > {{ publicacao.tituloPublicacao }}</span>
+                      <span > {{ publicacao.Titulo }}</span>
                   </p>
               </div>
               <div class="col-3 d-flex justify-content-end">
@@ -13,7 +13,7 @@
           </div>
           <div>
               <p class="localizao-pub">
-                  <span><i class="bi bi-geo-alt"></i>{{  publicacao.localizacaoPublicacao }}</span>
+                  <span><i class="bi bi-geo-alt"></i>{{  publicacao.Endereco }}</span>
               </p>
           </div>
           <div class=" row col-11">
@@ -57,7 +57,7 @@
                                   margin-left: 40%;">
                       <i class="bi bi-body-text"></i> Descrição
                   </label>
-                  <textarea v-model="publicacao.descricaoPubli" class="form-control mb-3 text-area" 
+                  <textarea v-model="publicacao.descricao" class="form-control mb-3 text-area" 
                   style="min-height: 300px; max-height:300px ; margin-left: 40%; font-size: 13px;">
                       
                   </textarea>
@@ -67,13 +67,13 @@
               <div class="col-4" >
                   <p style="font-family: 'Red Hat Display', sans-serif;">
                       <i @click="aumentarVotacao" class="btn bi bi-caret-up-square botao-positivo"></i>
-                      {{ upVote }} votos positivos
+                      {{ publicacao.VotosPositivos }} votos positivos
                   </p>
               </div>
               <div class="col-4">
                   <p style="font-family: 'Red Hat Display', sans-serif;">
                       <i @click="diminuirVotacao" class=" btn bi bi-caret-down-square botao-negativo"></i>
-                      {{ downVote }} votos negativos
+                      {{ publicacao.VotosNegativos }} votos negativos
                   </p>
               </div>
           </div>
