@@ -117,7 +117,7 @@
               >
                 <h4>CADASTRAR</h4>
               </button>
-              <a href="../login">
+              <a href="/login">
                   <h4 id="link-cadastrar">Voltar</h4>
               </a>
             </div>
@@ -190,7 +190,10 @@ export default {
           position: toast.POSITION.BOTTOM_RIGHT
         });
         
-        route.push({name: 'login'})
+        setInterval(() => {
+            window.location.replace('/login');
+          }, 3000);
+        
       })
       .catch(() => {
         toast.error("Ouve um erro ao realizar o cadastro.", {

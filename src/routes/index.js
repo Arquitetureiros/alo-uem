@@ -49,7 +49,7 @@ const router = createRouter({
 router.beforeEach((to, from) => {
   
   const token = localStorage.getItem('token');
-  if(!token && to.name != 'login'){
+  if(!token && to.name != 'login' && to.name !='validar-cadastro' && to.name != 'cadastro'){
     return { name: 'login' }
   }
 
