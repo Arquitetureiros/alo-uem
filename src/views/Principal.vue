@@ -84,9 +84,12 @@
                 </div>
                 <div>
                     <CardPublicacao
+                        v-model="publicacaoVisible"
                         v-for="(publicacao, index) in publicacoes"
                         :key="index"
                         :publicacao="publicacao"
+                        :id-usuario="idUsuario"
+                        :nome-usuario="nomeUsuario"
                         />
                 </div>
                 
@@ -121,6 +124,7 @@
     </div>
 
     <AlertaTermosUso :alerta-visible="alertaVisible" @fechar="fecharAlerta" ></AlertaTermosUso>
+
 </template>
 <script setup>
 import CardPublicacao from '../components/CardPublicacao.vue';
@@ -128,22 +132,29 @@ import AlertaTermosUso from '../components/AlertaTermosUso.vue';
 import { ref, onBeforeMount, onMounted, onBeforeUnmount } from 'vue';
 import * as Funcoes from '../utils/Funcoes'
 import bootstrap  from 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
+import http from '../services/http.js'
 const title = ref("")
 const descricao = ref("")
-const localizacao = ref("")
 const publicacoes = ref([])
+const localizacao = ref("")
 const images = ref([]);
 const MAX_IMAGES = 3;
 const alertaCamposVisible = ref(false)
 const mensagemFalha = ref('')
 const alertaVisible = ref(true)
-onBeforeMount(()=> {
-    carregarPublicacoes()
-})
+const userLogado = ref(null)
+const idUsuario = ref(null)
+const nomeUsuario = ref(null)
+const publicacaoVisible = ref(false)
 
-onMounted(() => {
-  window.addEventListener('scroll', handleScroll);
-  verificarAlertaTermosUso()
+
+onMounted(async () => {
+    window.addEventListener('scroll', handleScroll);
+    verificarAlertaTermosUso()
+    await carregarPublicacoes()
+    carregarUsuarioLogado()
 });
 
 onBeforeUnmount(() => {
@@ -164,88 +175,50 @@ const scrollToTop = () => {
   });
 };
 
-function carregarPublicacoes() {
-    publicacoes.value = [
-      {
-        idPublicacao: 1,
-        tituloPublicacao: 'Título 1',
-        localizacaoPublicacao: 'Localização 1',
-        descricaoPubli: 'Descrição 1',
-        upVote: 10,
-        downVote: 5,
-        comentarios:[
-            {
-            comentarioId: 1,
-            usuarioId: 1,
-            usuario: "Leo",
-            mensagem: "Nada"
-            },
-            {
-            comentarioId: 2,
-            usuarioId: 2,
-            usuario: "Giovanni",
-            mensagem: "loren Ipsum"
-            },
-
-        ]
-      },
-      {
-        idPublicacao: 2,
-        tituloPublicacao: 'Título 2',
-        localizacaoPublicacao: 'Localização 2',
-        descricaoPubli: 'Descrição 2',
-        upVote: 7,
-        downVote: 2,
-        comentarios:[]
-      },
-      {
-        idPublicacao: 3,
-        tituloPublicacao: 'Título 3',
-        localizacaoPublicacao: 'Localização 3',
-        descricaoPubli: 'Descrição 3',
-        upVote: 151,
-        downVote: 123,
-        comentarios:[
-            {
-            comentarioId: 3,
-            usuarioId: 1,
-            usuario: "Admin",
-            mensagem: "Nada"
-            },
-            {
-            comentarioId: 4,
-            usuarioId: 2,
-            usuario: "Danilo",
-            mensagem: "loren Ipsum"
-            },
-            {
-            comentarioId: 5,
-            usuarioId: 3,
-            usuario: "Gabriel",
-            mensagem: "BABBABABBABABBABAAAAAAAAAAAAAAA"
-            },
-
-        ]
-      }
-    ]
+function carregarUsuarioLogado(){
+    const jsonString = localStorage.getItem('usuario');
+    const objeto = JSON.parse(jsonString);
+    userLogado.value = objeto
+    idUsuario.value = userLogado.value.IdUsuario
+    nomeUsuario.value = userLogado.value.Nome
 }
 
-function criarPublicacao() {
+async function carregarPublicacoes() {
+    await http.get('/aprovadas/publicacao')
+        .then(response => {
+            publicacoes.value = response.data.data
+            publicacaoVisible.value = true
+        })
+        .catch(error => {
+            console.error("Erro ao carregar publicações: " + error);
+        })
+
+}
+
+
+
+async function criarPublicacao() {
     if(!verificarCamposVazios()){
-        console.log(title.value + " - " + descricao.value + " - " + localizacao.value + " - " + images.value);
-        const publicacao = {
-            tituloPublicacao: title.value,
-            localizacaoPublicacao: localizacao.value,
-            descricaoPubli: descricao.value,
-            upVote: 0,
-            downVote: 0,
-            imagens: images.value
+        var publicacao = {
+            Titulo: title.value,
+            descricao: localizacao.value,
+            Endereco: descricao.value,
+            fk_IdEstado: 3,
+            VotosPositivos: 0,
+            VotosNegativos: 0,
+            fk_IdUsuario: idUsuario.value
         }
-        console.log('PUBLICAÇÃO CRIADA');
-        publicacoes.value.push(publicacao)
-        const toast = new bootstrap.Toast(document.getElementById("toastCriado"));
-        console.log(toast);
-        toast.show();
+
+        await http.post('/publicacao', publicacao)
+        .then(async response => {
+            await salvarImagensPublicacao(response.data.id)
+            toast.success("Publicação criada com sucesso.", {
+            autoClose: 3000,
+            position: toast.POSITION.BOTTOM_RIGHT
+            })
+        }).catch(error => {
+            console.error("Erro ao criar publicacao" +error);
+        })
         title.value = ''
         descricao.value = ''
         localizacao.value = '' 
@@ -256,6 +229,27 @@ function criarPublicacao() {
             alertaCamposVisible.value = false 
             mensagemFalha.value = ''
         }, 4000);
+    }
+}
+
+async function salvarImagensPublicacao(id){
+    if (images.value.length > 0){
+        for (const foto of images.value){
+                var fotosRequest = {
+                    nome: foto,
+                    fk_IdPublicacao: id
+                }
+                await http.post('/foto', fotosRequest)
+                .then(response => {
+                })
+                .catch(error => {
+                    console.error("Erro ao salvar imagens: " + error);
+
+                })
+        }
+        
+    } else {
+        return
     }
 }
 
@@ -272,6 +266,7 @@ function verificarCamposVazios() {
         mensagemFalha.value = ('Necessário informar a localização do problema')
         return true
     }
+    return false
 }
 
 
@@ -288,16 +283,11 @@ const handleFileUpload = (event) => {
             const reader = new FileReader();
 
             reader.onload = (e) => {
-                // Adicione a URL da imagem ao array de imagens
                 images.value.push(e.target.result);
             };
-
-            // Leia o arquivo como uma URL de dados (base64)
             reader.readAsDataURL(file);
         }
     }
-
-    console.log(images.value);
 }
 
 function verificarAlertaTermosUso(){
