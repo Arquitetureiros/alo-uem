@@ -42,8 +42,8 @@ import { toast } from 'vue3-toastify';
 import { useRouter } from 'vue-router';
 
 const dados = reactive({
-    email: 'admin@admin.com',
-    senha: 'admin'
+    email: '',
+    senha: ''
 })
 
 const route = useRouter();
