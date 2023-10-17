@@ -37,13 +37,17 @@
 
 <script setup>
 import  http  from '@/services/http.js'
-import { reactive } from 'vue'
+import { onBeforeMount, reactive } from 'vue'
 import { toast } from 'vue3-toastify';
 import { useRouter } from 'vue-router';
 
 const dados = reactive({
     email: '',
     senha: ''
+})
+
+onBeforeMount(()=> {
+    localStorage.clear();
 })
 
 const route = useRouter();
