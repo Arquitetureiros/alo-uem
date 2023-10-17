@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router"
+import  registerValidate  from '../views/cadastro/RegisterValidate.vue' 
 
 const routes = [
   { 
@@ -9,7 +10,7 @@ const routes = [
   { 
     path: '/register-validate', 
     name: 'validar-cadastro',
-    component: import('../views/cadastro/RegisterValidate.vue') 
+    component: registerValidate
   },
   {
     path: "/login",
@@ -22,8 +23,12 @@ const routes = [
     component: import('../views/moderador/AprovarPublicacao.vue')
   },
   {
+    path: "/perfil",
+    name: 'perfil',
+    component: import('../views/Perfil.vue')
+  },
+  {
     path: "/",
-    // redirect: '/login',
     name: 'home',
     component: import('../views/Principal.vue'), 
     children: [
