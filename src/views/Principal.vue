@@ -214,8 +214,8 @@ async function criarPublicacao() {
     if(!verificarCamposVazios()){
         var publicacao = {
             Titulo: title.value,
-            descricao: localizacao.value,
-            Endereco: descricao.value,
+            descricao: descricao.value,
+            Endereco: localizacao.value,
             fk_IdEstado: 3,
             VotosPositivos: 0,
             VotosNegativos: 0,
@@ -316,7 +316,7 @@ function fecharAlerta() {
 }
 
 function irPerfil(){
-    //route.push({name: 'perfil'})
+    route.push({name: 'perfil'})
 }
 
 function sairSistema() {
