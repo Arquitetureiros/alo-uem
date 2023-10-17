@@ -60,7 +60,7 @@ router.beforeEach((to, from) => {
 
   const tipo = localStorage.getItem('tipo');
 
-  if(tipo == '"moderador"' && to.name != 'modPublicacoes' && to.name != 'login'){
+  if(tipo == '"moderador"' && to.name != 'modPublicacoes' && to.name != 'login' && to.name != 'perfil'){
     return { name: 'modPublicacoes' }
   }
 

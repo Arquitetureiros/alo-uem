@@ -7,7 +7,7 @@
               <a 
               class="nav-link active me-4 link-perfil align-items-center flex"
               aria-current="page" 
-              href="#"
+              href="/perfil"
               >
               <i class="fa-regular fa-user pe-2"></i>
                 <span>
